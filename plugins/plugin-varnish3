@@ -1,0 +1,956 @@
+plugin {
+    id 51
+    plugin Varnish.Check
+    command check-varnish3
+    datatype statistic
+    category System,Webserver,Varnish
+    abstract Varnish server status
+    description Varnish statistics
+}
+
+statistic {
+    statkey client_conn
+    alias Client connections accepted
+    datatype float
+    description Client connections accepted
+}
+
+statistic {
+    statkey client_drop
+    alias Connection dropped, no sess/wrk
+    datatype float
+    description Connection dropped, no sess/wrk
+}
+
+statistic {
+    statkey client_req
+    alias Client requests received
+    datatype float
+    description Client requests received
+}
+
+statistic {
+    statkey cache_hit
+    alias Cache hits
+    datatype float
+    description Cache hits
+}
+
+statistic {
+    statkey cache_hitpass
+    alias Cache hits for pass
+    datatype float
+    description Cache hits for pass
+}
+
+statistic {
+    statkey cache_miss
+    alias Cache misses
+    datatype float
+    description Cache misses
+}
+
+statistic {
+    statkey cache_hit_ratio
+    alias Cache hit ratio
+    datatype float
+    description Cache hit ratio
+}
+
+statistic {
+    statkey cache_hitpass_ratio
+    alias Cache hitpass ratio
+    datatype float
+    description Cache hitpass ratio
+}
+
+statistic {
+    statkey cache_miss_ratio
+    alias Cache miss ratio
+    datatype float
+    description Cache miss ratio
+}
+
+statistic {
+    statkey backend_conn
+    alias Backend conn. success
+    datatype float
+    description Backend conn. success
+}
+
+statistic {
+    statkey backend_unhealthy
+    alias Backend conn. not attempted
+    datatype float
+    description Backend conn. not attempted
+}
+
+statistic {
+    statkey backend_busy
+    alias Backend conn. too many
+    datatype float
+    description Backend conn. too many
+}
+
+statistic {
+    statkey backend_fail
+    alias Backend conn. failures
+    datatype float
+    description Backend conn. failures
+}
+
+statistic {
+    statkey backend_reuse
+    alias Backend conn. reuses
+    datatype float
+    description Backend conn. reuses
+}
+
+statistic {
+    statkey backend_toolate
+    alias Backend conn. was closed
+    datatype float
+    description Backend conn. was closed
+}
+
+statistic {
+    statkey backend_recycle
+    alias Backend conn. recycles
+    datatype float
+    description Backend conn. recycles
+}
+
+statistic {
+    statkey backend_retry
+    alias Backend conn. retry
+    datatype float
+    description Backend conn. retry
+}
+
+statistic {
+    statkey backend_req
+    alias Backend requests made
+    datatype float
+    description Backend requests made
+}
+
+statistic {
+    statkey fetch_failed
+    alias Fetch failed
+    datatype float
+    description Fetch failed
+}
+
+statistic {
+    statkey n_sess_mem
+    alias N struct sess_mem
+    datatype float
+    units bytes
+    description N struct sess_mem
+}
+
+statistic {
+    statkey n_sess
+    alias N struct sess_mem
+    datatype float
+    description N struct sess_mem
+}
+
+statistic {
+    statkey n_object
+    alias N struct object
+    datatype float
+    description N struct object
+}
+
+statistic {
+    statkey n_objectcore
+    alias N struct objectcore
+    datatype float
+    description N struct objectcore
+}
+
+statistic {
+    statkey n_objecthead
+    alias N struct objecthead
+    datatype float
+    description N struct objecthead
+}
+
+statistic {
+    statkey n_wrk
+    alias N worker threads
+    datatype float
+    description N worker threads
+}
+
+statistic {
+    statkey n_wrk_create
+    alias N worker threads created
+    datatype float
+    description N worker threads created
+}
+
+statistic {
+    statkey n_wrk_failed
+    alias N worker threads not created
+    datatype float
+    description N worker threads not created
+}
+
+statistic {
+    statkey n_wrk_max
+    alias N worker threads limited
+    datatype float
+    description N worker threads limited
+}
+
+statistic {
+    statkey n_wrk_lqueue
+    alias work request queue length
+    datatype float
+    description work request queue length
+}
+
+statistic {
+    statkey n_wrk_drop
+    alias N dropped work requests
+    datatype float
+    description N dropped work requests
+}
+
+statistic {
+    statkey n_backend
+    alias N backends
+    datatype float
+    description N backends
+}
+
+statistic {
+    statkey n_expired
+    alias N expired objects
+    datatype float
+    description N expired objects
+}
+
+statistic {
+    statkey n_lru_nuked
+    alias N LRU nuked objects
+    datatype float
+    description N LRU nuked objects
+}
+
+statistic {
+    statkey n_lru_moved
+    alias N LRU moved objects
+    datatype float
+    description N LRU moved objects
+}
+
+statistic {
+    statkey losthdr
+    alias HTTP header overflows
+    datatype float
+    description HTTP header overflows
+}
+
+statistic {
+    statkey n_objsendfile
+    alias Objects sent with sendfile
+    datatype float
+    description Objects sent with sendfile
+}
+
+statistic {
+    statkey n_objwrite
+    alias Objects sent with write
+    datatype float
+    description Objects sent with write
+}
+
+statistic {
+    statkey n_objoverflow
+    alias Objects overflowing workspace
+    datatype float
+    description Objects overflowing workspace
+}
+
+statistic {
+    statkey s_pipe
+    alias Total pipe
+    datatype float
+    description Total pipe
+}
+
+statistic {
+    statkey s_pass
+    alias Total pass
+    datatype float
+    description Total pass
+}
+
+statistic {
+    statkey s_hdrbytes
+    alias Total header bytes
+    datatype float
+    units bytes
+    description Total header bytes
+}
+
+statistic {
+    statkey s_bodybytes
+    alias Total body bytes
+    datatype float
+    units bytes
+    description Total body bytes
+}
+
+statistic {
+    statkey sess_closed
+    alias Session Closed
+    datatype float
+    description Session Closed
+}
+
+statistic {
+    statkey sess_pipeline
+    alias Session Pipeline
+    datatype float
+    description Session Pipeline
+}
+
+statistic {
+    statkey sess_readahead
+    alias Session Read Ahead
+    datatype float
+    description Session Read Ahead
+}
+
+statistic {
+    statkey sess_linger
+    alias Session Linger
+    datatype float
+    description Session Linger
+}
+
+statistic {
+    statkey sess_herd
+    alias Session herd
+    datatype float
+    description Session herd
+}
+
+statistic {
+    statkey shm_records
+    alias SHM records
+    datatype float
+    units bytes
+    description SHM records
+}
+
+statistic {
+    statkey shm_writes
+    alias SHM writes
+    datatype float
+    units bytes
+    description SHM writes
+}
+
+statistic {
+    statkey shm_flushes
+    alias SHM flushes due to overflow
+    datatype float
+    description SHM flushes due to overflow
+}
+
+statistic {
+    statkey shm_cont
+    alias SHM MTX contention
+    datatype float
+    description SHM MTX contention
+}
+
+statistic {
+    statkey shm_cycles
+    alias SHM cycles through buffer
+    datatype float
+    description SHM cycles through buffer
+}
+
+statistic {
+    statkey sms_nreq
+    alias SMS allocator requests
+    datatype float
+    description SMS allocator requests
+}
+
+statistic {
+    statkey sms_nbytes
+    alias SMS outstanding bytes
+    datatype float
+    units bytes
+    description SMS outstanding bytes
+}
+
+statistic {
+    statkey n_vcl
+    alias N vcl total
+    datatype float
+    description N vcl total
+}
+
+statistic {
+    statkey n_vcl_avail
+    alias N vcl available
+    datatype float
+    description N vcl available
+}
+
+statistic {
+    statkey n_vcl_discard
+    alias N vcl discarded
+    datatype float
+    description N vcl discarded
+}
+
+statistic {
+    statkey n_ban
+    alias N total active bans
+    datatype float
+    description N total active bans
+}
+
+statistic {
+    statkey n_ban_add
+    alias N new bans added
+    datatype float
+    description N new bans added
+}
+
+statistic {
+    statkey n_ban_retire
+    alias N old bans deleted
+    datatype float
+    description N old bans deleted
+}
+
+statistic {
+    statkey n_ban_obj_test
+    alias N objects tested
+    datatype float
+    description N objects tested
+}
+
+statistic {
+    statkey n_ban_re_test
+    alias N regexps tested against
+    datatype float
+    description N regexps tested against
+}
+
+statistic {
+    statkey n_ban_dups
+    alias N duplicate bans removed
+    datatype float
+    description N duplicate bans removed
+}
+
+statistic {
+    statkey hcb_nolock
+    alias HCB Lookups without lock
+    datatype float
+    description HCB Lookups without lock
+}
+
+statistic {
+    statkey hcb_lock
+    alias HCB Lookups with lock
+    datatype float
+    description HCB Lookups with lock
+}
+
+statistic {
+    statkey hcb_insert
+    alias HCB Inserts
+    datatype float
+    description HCB Inserts
+}
+
+statistic {
+    statkey esi_errors
+    alias ESI parse errors
+    datatype float
+    description ESI parse errors (unlock)
+}
+
+statistic {
+    statkey esi_warnings
+    alias ESI parse warnings
+    datatype float
+    description ESI parse warnings (unlock)
+}
+
+statistic {
+    statkey accept_fail
+    alias Accept failures
+    datatype float
+    description Accept failures
+}
+
+statistic {
+    statkey client_drop_late
+    alias Connection dropped late
+    datatype float
+    description Connection dropped late
+}
+
+statistic {
+    statkey uptime
+    alias Client uptime
+    datatype float
+    description Client uptime
+}
+
+statistic {
+    statkey n_gzip
+    alias Gzip operations
+    datatype float
+    description Gzip operations
+}
+
+statistic {
+    statkey n_gunzip
+    alias Gunzip operations
+    datatype float
+    description Gunzip operations
+}
+
+statistic {
+    statkey sma_s0_c_fail
+    alias Allocator failures
+    datatype float
+    description Allocator failures
+}
+
+statistic {
+    statkey sma_s0_g_bytes
+    alias Bytes outstanding
+    datatype float
+    units bytes
+    description Bytes outstanding
+}
+
+statistic {
+    statkey sma_s0_g_space
+    alias Bytes available
+    datatype float
+    units bytes
+    description Bytes available
+}
+
+statistic {
+    statkey sma_transient_c_fail
+    alias Allocator failures
+    datatype float
+    description Allocator failures
+}
+
+statistic {
+    statkey sma_transient_g_bytes
+    alias Bytes outstanding
+    datatype float
+    units bytes
+    description Bytes outstanding
+}
+
+statistic {
+    statkey sma_transient_space
+    alias Bytes available
+    datatype float
+    units bytes
+    description Bytes available
+}
+
+chart {
+    id 1
+    title Varnish - request rate
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name client_conn
+            color \#e9644a
+        }
+        series {
+            name client_req
+            color \#ffb244
+        }
+        series {
+            name cache_hit
+            color \#9a72ad
+        }
+        series {
+            name cache_hitpass
+            color \#005467
+        }
+        series {
+            name cache_miss
+            color \#2ba743
+        }
+        series {
+            name backend_conn
+            color \#7648eb
+        }
+        series {
+            name backend_unhealthy
+            color \#7f7fff
+        }
+    }
+}
+
+chart {
+    id 2
+    title Varnish - hit and miss ratio
+    options {
+        ylabel ratio
+        chart-type area
+        series {
+            name cache_hit_ratio
+            color \#ffb244
+        }
+        series {
+            name cache_hitpass_ratio
+            color \#ff7a0d
+        }
+        series {
+            name cache_miss_ratio
+            color \#e9644a
+        }
+    }
+}
+
+chart {
+    id 3
+    title Varnish - backend traffic
+    options {
+        ylabel traffic
+        chart-type area
+        series {
+            name backend_conn
+            color \#ffb244
+        }
+        series {
+            name backend_unhealthy
+            color \#9a72ad
+        }
+        series {
+            name backend_busy
+            color \#005467
+        }
+        series {
+            name backend_fail
+            color \#e9644a
+        }
+        series {
+            name backend_reuse
+            color \#2ba743
+        }
+        series {
+            name backend_recycle
+            color \#7648eb
+        }
+        series {
+            name backend_unused
+            color \#7f7fff
+        }
+        series {
+            name backend_req
+            color \#ff7a0d
+            opposite true
+        }
+    }
+}
+
+chart {
+    id 4
+    title Varnish - number of objects
+    options {
+        ylabel number
+        chart-type area
+        series {
+            name n_object
+            color \#ffb244
+        }
+        series {
+            name n_objcore
+            color \#005467
+        }
+        series {
+            name n_objhead
+            color \#e9644a
+        }
+    }
+}
+
+chart {
+    id 5
+    title Varnish - transfer rates
+    options {
+        ylabel bytes/s
+        chart-type area
+        series {
+            name s_hdrbytes
+            color \#ff7a0d
+        }
+        series {
+            name s_bodybytes
+            color \#e9644a
+        }
+    }
+}
+
+chart {
+    id 6
+    title Varnish - thread status
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name n_wrk
+            color \#ffb244
+        }
+        series {
+            name n_wrk_create
+            color \#9a72ad
+        }
+        series {
+            name n_wrk_failed
+            color \#005467
+        }
+        series {
+            name n_wrk_max
+            color \#e9644a
+        }
+        series {
+            name n_wrk_overflow
+            color \#2ba743
+        }
+        series {
+            name n_wrk_drop
+            color \#7648eb
+        }
+    }
+}
+
+chart {
+    id 7
+    title Varnish - memory usage
+    options {
+        ylabel bytes
+        chart-type area
+        series {
+            name sms_nbytes
+            color \#ffb244
+        }
+        series {
+            name sma_s0_g_bytes
+            color \#9a72ad
+        }
+        series {
+            name sma_s0_g_space
+            color \#005467
+        }
+        series {
+            name sma_transient_g_bytes
+            color \#e9644a
+        }
+        series {
+            name sma_transient_space
+            color \#2ba743
+        }
+    }
+}
+
+chart {
+    id 8
+    title Varnish - misbehaviours
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name client_drop
+            color \#e9644a
+        }
+        series {
+            name backend_unhealthy
+            color \#ffb244
+        }
+        series {
+            name backend_busy
+            color \#9a72ad
+        }
+        series {
+            name fetch_failed
+            color \#005467
+        }
+        series {
+            name n_wrk_failed
+            color \#2ba743
+        }
+        series {
+            name n_wrk_max
+            color \#7648eb
+        }
+        series {
+            name n_wrk_drop
+            color \#7f7fff
+        }
+        series {
+            name n_wrk_lqueue
+            color \#1c6d16
+        }
+        series {
+            name losthdr
+            color \#bf00bf
+        }
+        series {
+            name n_objoverflow
+            color \#275487
+        }
+        series {
+            name client_drop_late
+            color \#666666
+        }
+        series {
+            name client_drop_late
+            color \#cc8e36
+        }
+    }
+}
+
+chart {
+    id 9
+    title Varnish - esi errors
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name esi_warnings
+            color \#ff7a0d
+        }
+        series {
+            name esi_errors
+            color \#e9644a
+        }
+    }
+}
+
+chart {
+    id 10
+    title Varnish - vcl and bans
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name n_backend
+            color \#e9644a
+        }
+        series {
+            name n_vcl
+            color \#ffb244
+        }
+        series {
+            name n_vcl_avail
+            color \#9a72ad
+        }
+        series {
+            name n_vcl_discard
+            color \#005467
+        }
+        series {
+            name n_ban
+            color \#e9644a
+            opposite true
+        }
+        series {
+            name n_ban_add
+            color \#ffb244
+            opposite true
+        }
+        series {
+            name n_ban_retire
+            color \#9a72ad
+            opposite true
+        }
+        series {
+            name n_ban_obj_test
+            color \#005467
+            opposite true
+        }
+        series {
+            name n_ban_re_test
+            color \#2ba743
+            opposite true
+        }
+        series {
+            name n_ban_dups
+            color \#7648eb
+            opposite true
+        }
+    }
+}
+
+chart {
+    id 11
+    title Varnish - lru activity
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name n_lru_moved
+            color \#ff7a0d
+        }
+        series {
+            name n_lru_saved
+            color \#e9644a
+        }
+    }
+}
+
+chart {
+    id 12
+    title Varnish - Shared memory activity
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name shm_flushes
+            color \#ffb244
+        }
+        series {
+            name shm_cont
+            color \#005467
+        }
+        series {
+            name shm_cycles
+            color \#e9644a
+        }
+    }
+}
+
+chart {
+    id 13
+    title Varnish - Shared memory writes and records
+    options {
+        ylabel count
+        chart-type area
+        series {
+            name shm_records
+            color \#ffb244
+        }
+        series {
+            name shm_writes
+            color \#005467
+        }
+    }
+}

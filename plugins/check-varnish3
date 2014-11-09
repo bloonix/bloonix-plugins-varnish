@@ -1,0 +1,194 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Bloonix::Plugin;
+use Bloonix::IPC::Cmd;
+
+# key => [qw(1 0 1)]
+#   First argument:
+#       0 = no counter
+#       1 = counter, calculate delta
+#   Second argument:
+#       0 = use the original key
+#       ? = replace the key with ...
+#   Third argument:
+#       0 = no bytes
+#       1 = bytes
+my %varnishstats = (
+    client_conn => [qw(1 0 0)],
+    client_drop => [qw(1 0 0)],
+    client_req => [qw(1 0 0)],
+    cache_hit => [qw(1 0 0)],
+    cache_hitpass => [qw(1 0 0)],
+    cache_miss => [qw(1 0 0)],
+    backend_conn => [qw(1 0 0)],
+    backend_unhealthy => [qw(1 0 0)],
+    backend_busy => [qw(1 0 0)],
+    backend_fail => [qw(1 0 0)],
+    backend_reuse => [qw(1 0 0)],
+    backend_toolate => [qw(1 0 0)],
+    backend_recycle => [qw(1 0 0)],
+    backend_retry => [qw(1 0 0)],
+    backend_req => [qw(1 0 0)],
+    fetch_failed => [qw(1 0 0)],
+    n_sess_mem => [qw(0 0 0)],
+    n_sess => [qw(0 0 0)],
+    n_object => [qw(0 0 0)],
+    n_objectcore => [qw(0 0 0)],
+    n_objecthead => [qw(0 0 0)],
+    n_wrk => [qw(0 0 0)],
+    n_wrk_create => [qw(1 0 0)],
+    n_wrk_failed => [qw(1 0 0)],
+    n_wrk_max => [qw(1 0 0)],
+    n_wrk_lqueue => [qw(0 0 0)],
+    n_wrk_drop => [qw(1 0 0)],
+    n_backend => [qw(0 0 0)],
+    n_expired => [qw(1 0 0)],
+    n_lru_nuked => [qw(1 0 0)],
+    n_lru_moved => [qw(1 0 0)],
+    losthdr => [qw(1 0 0)],
+    n_objsendfile => [qw(1 0 0)],
+    n_objwrite => [qw(1 0 0)],
+    n_objoverflow => [qw(1 0 0)],
+    s_pipe => [qw(1 0 0)],
+    s_pass => [qw(1 0 0)],
+    s_hdrbytes => [qw(1 0 0)],
+    s_bodybytes => [qw(1 0 0)],
+    sess_closed => [qw(1 0 0)],
+    sess_pipeline => [qw(1 0 0)],
+    sess_readahead => [qw(1 0 0)],
+    sess_linger => [qw(1 0 0)],
+    sess_herd => [qw(1 0 0)],
+    shm_records => [qw(1 0 0)],
+    shm_writes => [qw(1 0 0)],
+    shm_flushes => [qw(1 0 0)],
+    shm_cont => [qw(1 0 0)],
+    shm_cycles => [qw(1 0 0)],
+    sms_nreq => [qw(1 0 0)],
+    sms_nbytes => [qw(0 0 1)],
+    n_vcl => [qw(1 0 0)],
+    n_vcl_avail => [qw(1 0 0)],
+    n_vcl_discard => [qw(1 0 0)],
+    n_ban => [qw(0 0 0)],
+    n_ban_add => [qw(1 0 0)],
+    n_ban_retire => [qw(1 0 0)],
+    n_ban_obj_test => [qw(1 0 0)],
+    n_ban_re_test => [qw(1 0 0)],
+    n_ban_dups => [qw(1 0 0)],
+    hcb_nolock => [qw(1 0 0)],
+    hcb_lock => [qw(1 0 0)],
+    hcb_insert => [qw(1 0 0)],
+    esi_errors => [qw(1 0 0)],
+    esi_warnings => [qw(1 0 0)],
+    accept_fail => [qw(1 0 0)],
+    client_drop_late => [qw(1 0 0)],
+    uptime => [qw(0 0 0)],
+    n_gzip => [qw(1 0 0)],
+    n_gunzip => [qw(1 0 0)],
+    "SMA.s0.c_fail" => [qw(1 sma_s0_c_fail 0)],
+    "SMA.s0.g_bytes" => [qw(1 sma_s0_g_bytes 1)],
+    "SMA.s0.g_space" => [qw(1 sma_s0_g_space 1)],
+    "SMA.Transient.c_fail" => [qw(1 sma_transient_c_fail 0)],
+    "SMA.Transient.g_bytes" => [qw(1 sma_transient_g_bytes 1)],
+    "SMA.Transient.g_space" => [qw(1 sma_transient_space 1)],
+);
+
+my @delta_keys;
+my @thresholds = (
+    { key => "cache_hit_ratio"},
+    { key => "cache_hitpass_ratio"},
+    { key => "cache_miss_ratio"}
+);
+
+foreach my $key (keys %varnishstats) {
+    my $name = $varnishstats{$key}[1]
+        ? $varnishstats{$key}[1]
+        : lc($key);
+
+    push @thresholds, $varnishstats{$key}[2]
+        ? { key => $name, unit => "bytes" }
+        : { key => $name };
+
+    if ($varnishstats{$key}[1]) {
+        push @delta_keys, $name;
+    }
+}
+
+# --------------------------------------------------
+# Plugin options
+# --------------------------------------------------
+
+my $plugin = Bloonix::Plugin->new(version => "0.1");
+
+$plugin->example(
+    description => "Check Varnish cache",
+    arguments => [
+        warning => "cache_hit_ratio:lt:95",
+        warning => "cache_hitpass_ratio:lt:95"
+    ]
+);
+
+$plugin->has_threshold(keys => \@thresholds);
+$plugin->has_timeout(default => 10);
+
+# --------------------------------------------------
+# Parse options
+# --------------------------------------------------
+
+my $opt = $plugin->parse_options;
+
+# --------------------------------------------------
+# Check if varnishstat is available
+# --------------------------------------------------
+
+my $varnishstat = qx{which varnishstat};
+chomp $varnishstat;
+
+if (!$varnishstat) {
+    $plugin->exit(
+        status => "UNKNOWN",
+        message => "no varnishstat command found"
+    );
+}
+
+# --------------------------------------------------
+# load() function to get varnish statistics
+# --------------------------------------------------
+
+my $stat = {};
+my $ipc = $plugin->execute(
+    command => "$varnishstat -1",
+    timeout => $opt->{timeout},
+    kill_signal => 9
+);
+
+foreach my $line (@{ $ipc->stdout }) {
+    if ($line =~ /^([^\s]+)\s+([^\s]+)\s+/) {
+        my ($key, $value) = ($1, $2);
+        if (exists $varnishstats{$key}) {
+            if ($varnishstats{$key}->[1]) {
+                $stat->{ $varnishstats{$key}->[1] } = $value;
+            } else {
+                $stat->{$key} = $value;
+            }
+        }
+    }
+}
+
+my $total_hits_misses = $stat->{cache_hit} + $stat->{cache_hitpass} + $stat->{cache_miss};
+
+if ($total_hits_misses) {
+    $stat->{cache_hit_ratio} = sprintf("%.2f", $stat->{cache_hit} / $total_hits_misses * 100);
+    $stat->{cache_hitpass_ratio} = sprintf("%.2f", $stat->{cache_hitpass} / $total_hits_misses * 100);
+    $stat->{cache_miss_ratio} = sprintf("%.2f", $stat->{cache_miss} / $total_hits_misses * 100);
+} else {
+    $stat->{cache_hit_ratio} = $stat->{cache_hitpass_ratio} = $stat->{cache_miss_ratio} = "0.00";
+}
+
+$plugin->delta(stat => $stat, keys => \@delta_keys);
+
+$plugin->check_thresholds(
+    stats => $stat,
+    upshot_keys => [qw(client_conn client_req cache_hit_ratio cache_hitpass_ratio cache_miss_ratio)],
+    exit => "yes"
+);
