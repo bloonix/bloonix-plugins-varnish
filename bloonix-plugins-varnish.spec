@@ -1,6 +1,6 @@
 Summary: Bloonix plugins for Varnish.
 Name: bloonix-plugins-varnish
-Version: 0.3
+Version: 0.4
 Release: 1%{dist}
 License: Commercial
 Group: Utilities/System
@@ -52,6 +52,8 @@ rm -rf %{buildroot}
 %doc %attr(0444, root, root) %{docdir}/LICENSE
 
 %changelog
+* Tue Nov 18 2014 Jonny Schulz <js@bloonix.de> - 0.4-1
+- Fixed counter statistics.
 * Mon Nov 03 2014 Jonny Schulz <js@bloonix.de> - 0.3-1
 - Updated the license information.
 * Tue Aug 26 2014 Jonny Schulz <js@bloonix.de> - 0.2-1

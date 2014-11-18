@@ -109,7 +109,7 @@ foreach my $key (keys %varnishstats) {
         ? { key => $name, unit => "bytes" }
         : { key => $name };
 
-    if ($varnishstats{$key}[1]) {
+    if ($varnishstats{$key}[0]) {
         push @delta_keys, $name;
     }
 }
