@@ -1,3 +1,9 @@
+bloonix-plugins-varnish (0.5-1) unstable; urgency=low
+
+    * Extra release because the gpg key of bloonix is updated.
+
+ -- Jonny Schulz <js@bloonix.de>  Tue, 29 Mar 2016 02:55:12 +0200
+
 bloonix-plugins-varnish (0.4-1) unstable; urgency=low
 
     * Fixed counter statistics.
